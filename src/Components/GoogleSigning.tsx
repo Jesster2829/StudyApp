@@ -2,14 +2,18 @@
 
 import React from 'react'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { googleProvider } from '../Config/FireBase';
 
 
-export const Auth = () => {
+export const GoogleSigning = () => {
     const auth = getAuth();
     
     const signInWithGoogle = async () => {
-        const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
+        try{
+        await signInWithPopup(auth, googleProvider);
+        } catch (error) {
+            console.log(error);
+        }
     }
     return (
         <div>
