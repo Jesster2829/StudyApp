@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Tab, Tabs, AppBar, Box } from "@mui/material";
-import { DropdownMenu } from "@radix-ui/themes";
 import { Menu } from "../Menu";
 
 export const Home = () => {
