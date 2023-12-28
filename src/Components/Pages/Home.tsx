@@ -9,7 +9,24 @@ import { getDocs, collection } from "firebase/firestore";
 export const Home = () => {
   const [value, setValue] = React.useState(0);
   const [classes, setClasses] = React.useState([]); 
-  const Classesreference= collection(db,"Classes");
+  const auth = getAuth();
+  const picture = auth.currentUser?.photoURL;
+  const email = auth.currentUser?.email;
+
+  //each user has a uid that is unique to them, so we can use that to filter the classes
+  //this list contains mine (Jesse's) uid. if you want to test yours out, go to console and 
+  //see what uid Prints out and replace it. this is a temp measure until we can get the database 
+  // and middleware working and communicating with each other
+  const lists = [
+    { user: "uelk3an6UuPAqsrCqa3CNdhkyA23", class: "CMPT 332", useremail:email },
+    { user: "uelk3an6UuPAqsrCqa3CNdhkyA23", class: "CMPT 317", useremail:email },
+    { user: "uelk3an6UuPAqsrCqa3CNdhkyA23", class: "CMPT 340", useremail:email },
+    { user: "2", class: "1" },
+    { user: "2", class: "2" },
+    { user: "2", class: "3" }
+  ];
+  const Classesreference = collection(db, "Classes");
+  
 
   React.useEffect(() => {
     const fetchClasses = async () => {
@@ -22,6 +39,8 @@ export const Home = () => {
         id: doc.id}));
 
         console.log(filteredClasses);
+        console.log("Your UID : "+ auth.currentUser?.uid);
+     
 
       } catch (error) {
         console.log(error);
@@ -32,12 +51,11 @@ export const Home = () => {
   }, []);
 
 
-  const auth = getAuth();
-  const picture = auth.currentUser?.photoURL;
 
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    console.log(newValue, lists[value].class)
   };
 
   return (
@@ -49,17 +67,13 @@ export const Home = () => {
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
 
           <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Class 1" />
-            <Tab label="Class 2" />
-            <Tab label="Class 3" />
+          {lists.map((classItem, index) => 
+            classItem.user === auth.currentUser?.uid && (
+              <Tab label={`Class ${classItem.class}`} key={index} />
+            )
+          )}
           </Tabs>
-          <div>
-            {classes.map((classes: any) => (
-              <div key={classes.id}>
-                <h1>{classes.Name}</h1>
-              </div>
-            ))}
-          </div>
+          
           </Box>
       </AppBar>
     </Box>
