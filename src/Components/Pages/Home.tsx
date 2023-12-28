@@ -1,9 +1,11 @@
 import React from "react";
-import { Tab, Tabs, AppBar, Box, Avatar } from "@mui/material";
+import { Tab, Tabs, AppBar, Box, Avatar, ThemeProvider, CssBaseline, Button } from "@mui/material";
 import { Menu } from "../Menu";
 import { getAuth } from "firebase/auth";
 import {db} from "../../Config/FireBase";
 import { getDocs, collection } from "firebase/firestore";
+import { darker } from "../../themes";
+import { Link } from 'react-router-dom';
 
 
 export const Home = () => {
@@ -66,6 +68,8 @@ export const Home = () => {
   };
 
   return (
+    <ThemeProvider theme={darker}>
+    <CssBaseline />
     <Box sx={{ flexGrow: 1 }}> 
     <Avatar src={picture || ''} alt="Profile Picture" />     
       <Menu />
@@ -83,6 +87,13 @@ export const Home = () => {
           
           </Box>
       </AppBar>
+      <Link to="/calendarPage">
+        <Button>
+          Calendar
+        </Button>
+      </Link>
+
     </Box>
+    </ThemeProvider>
   );
 };
