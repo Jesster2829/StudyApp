@@ -7,9 +7,14 @@ import { getDocs, collection } from "firebase/firestore";
 
 
 export const Home = () => {
+
+
   const [value, setValue] = React.useState(0);
   const [classes, setClasses] = React.useState([]); 
   const auth = getAuth();
+  
+  //this is the picture of the user, if they have one. if not, it will be blank
+  //this is the email of the user, if they have one. if not, it will be blank
   const picture = auth.currentUser?.photoURL;
   const email = auth.currentUser?.email;
 
@@ -25,9 +30,11 @@ export const Home = () => {
     { user: "2", class: "2" },
     { user: "2", class: "3" }
   ];
+
+
+  //this is the reference to the classes collection in the database
   const Classesreference = collection(db, "Classes");
   
-
   React.useEffect(() => {
     const fetchClasses = async () => {
       try{
