@@ -1,7 +1,6 @@
-//create a authentication component that uses google authentication from firebase
 
-import React, { useState } from 'react';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { useState } from 'react';
+import { getAuth, signInWithPopup, signOut } from "firebase/auth";
 import { googleProvider } from '../Config/FireBase';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
@@ -19,8 +18,7 @@ export const GoogleSigning = () => {
         }
         auth.currentUser?.email && setEmail(auth.currentUser?.email);
         localStorage.setItem("email", auth.currentUser?.email || "");
-        if (localStorage.getItem("email") != "") {
-            console.log("email is not null");
+        if (localStorage.getItem("email") !== "") {
             console.log(localStorage.getItem("email"));
             navigate("/homePage");
         }
