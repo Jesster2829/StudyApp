@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { getAuth, signInWithPopup, signOut } from "firebase/auth";
 import { googleProvider } from '../Config/FireBase';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
+import AppleIcon from '@mui/icons-material/Apple';
+import MicrosoftIcon from '@mui/icons-material/Microsoft';
 
 export const GoogleSigning = () => {
     const [email, setEmail] = useState("");
@@ -36,9 +39,15 @@ export const GoogleSigning = () => {
     return (
         <Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <Typography>Current User: {email}</Typography>
-                <Button onClick={signInWithGoogle}>Sign In With Google</Button>
-                <Button onClick={signOutWithGoogle}>Sign Out</Button>
+                <IconButton onClick={signInWithGoogle}>
+                    <GoogleIcon />
+                </IconButton>
+                <IconButton onClick={signInWithGoogle}>
+                    <AppleIcon />
+                </IconButton>
+                <IconButton onClick={signInWithGoogle}>
+                    <MicrosoftIcon />
+                </IconButton>
             </Box>
         </Box>
     )
