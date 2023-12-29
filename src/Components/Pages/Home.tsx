@@ -88,9 +88,14 @@ export const Home = () => {
             <Button>
               Notes
             </Button>
+            <Link to="/flashcardsPage">
+            <Button>
+              Flashcards
+            </Button>
+            </Link>
           </Link>
         </Stack>
       </Stack>
     </ThemeProvider>
-  );
+ );
 };
