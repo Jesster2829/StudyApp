@@ -8,6 +8,7 @@ import { darker } from "../../themes";
 import { Link } from 'react-router-dom';
 import ResponsiveAppBar from "../PageHeaders/homeHeader";
 import { HomeCalendar } from "../Calendar/homeCalendar";
+import TodoList from "../Home/TodoList";
 
 
 export const Home = () => {
@@ -70,27 +71,26 @@ export const Home = () => {
 
   return (
     <ThemeProvider theme={darker}>
-    <Stack>
-      <ResponsiveAppBar />
-      <Stack>
-        <AppBar position="static">
-        </AppBar>
-        <Stack direction="row" justifyContent="flex-start" alignContent="flex-start">
-        <HomeCalendar />
+      <Stack direction="row">
+        <Stack direction="column" justifyContent="flex-end" alignItems="flex-start" width="70%">
+          <TodoList />
+          <HomeCalendar />
         </Stack>
-        <Link to="/calendarPage">
-          <Button>
-            Calendar
-          </Button>
-        </Link>
-        <Link to="/notesPage">
-          <Button>
-            Notes
-          </Button>
-        </Link>
-
+        <Stack direction="column" justifyContent="flex-start" alignItems="flex-end" width="30%">
+          <ResponsiveAppBar />
+          <AppBar position="static" />
+          <Link to="/calendarPage">
+            <Button>
+              Calendar
+            </Button>
+          </Link>
+          <Link to="/notesPage">
+            <Button>
+              Notes
+            </Button>
+          </Link>
         </Stack>
-    </Stack>
+      </Stack>
     </ThemeProvider>
   );
 };
