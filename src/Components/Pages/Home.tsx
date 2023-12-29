@@ -1,12 +1,13 @@
 import React from "react";
 import { Tab, Tabs, AppBar, Box, ThemeProvider, Button, Stack } from "@mui/material";
-import { Menu } from "../Menu";
+// import { Menu } from "../Menu";
 import { getAuth } from "firebase/auth";
 import {db} from "../../Config/FireBase";
 import { getDocs, collection } from "firebase/firestore";
 import { darker } from "../../themes";
 import { Link } from 'react-router-dom';
 import ResponsiveAppBar from "../PageHeaders/homeHeader";
+import { HomeCalendar } from "../Calendar/homeCalendar";
 
 
 export const Home = () => {
@@ -49,7 +50,7 @@ export const Home = () => {
 
         console.log(filteredClasses);
         console.log("Your UID : "+ auth.currentUser?.uid);
-     
+
 
       } catch (error) {
         console.log(error);
@@ -71,29 +72,24 @@ export const Home = () => {
     <ThemeProvider theme={darker}>
     <Stack>
       <ResponsiveAppBar />
-    <Box sx={{ flexGrow: 1 }}>  
-        <Menu />
+      <Stack>
         <AppBar position="static">
-
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-
-            <Tabs value={value} onChange={handleChange} centered>
-            {lists.map((classItem, index) => 
-              classItem.user === auth.currentUser?.uid && (
-                <Tab label={`Class ${classItem.class}`} key={index} />
-              )
-            )}
-            </Tabs>
-            
-            </Box>
         </AppBar>
+        <Stack direction="row" justifyContent="flex-start" alignContent="flex-start">
+        <HomeCalendar />
+        </Stack>
         <Link to="/calendarPage">
           <Button>
             Calendar
           </Button>
         </Link>
+        <Link to="/notesPage">
+          <Button>
+            Notes
+          </Button>
+        </Link>
 
-      </Box>
+        </Stack>
     </Stack>
     </ThemeProvider>
   );
