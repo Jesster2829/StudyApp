@@ -15,6 +15,10 @@ import { darker } from "../../themes";
 import { Flashcards } from "./FlashCardsPage";
 import { useNavigate } from "react-router";
 import {FlashcardClass} from "../PopUps/FlashcardClass";
+import { getAuth } from "firebase/auth";
+import { db } from "../../Config/FireBase";
+import { getDocs, collection, doc, setDoc, getDoc } from "firebase/firestore";
+
 
 
 const cards = [
@@ -48,8 +52,20 @@ function getRandomColor() {
 
 
 
+
+
 export function FlashcardsSelection() {
   const navigate= useNavigate();
+  const auth= getAuth();
+  const uid= auth.currentUser?.uid;
+
+  const flashcardsRef = collection(db, "users");
+  //i expect the flashcards field to be an array of objects, each object containing a className and an array of flashcards
+
+  
+
+
+
   
   function chosenFlashcards(className: string) {
 
