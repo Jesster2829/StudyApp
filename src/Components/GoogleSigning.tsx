@@ -36,6 +36,33 @@ export const GoogleSigning = () => {
         auth.currentUser?.email && setEmail("");
     }
 
+    const signInwithApple= async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.log(error);
+        }
+        auth.currentUser?.email && setEmail("");
+    }
+
+    const signInwithMicrosoft= async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.log(error);
+        }
+        auth.currentUser?.email && setEmail("");
+    }
+
+    const signInwithEmail= async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.log(error);
+        }
+        auth.currentUser?.email && setEmail("");
+    }
+
     return (
         <Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
