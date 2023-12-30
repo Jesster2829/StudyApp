@@ -1,5 +1,5 @@
 import React from "react";
-import { Tab, Tabs, Box, ThemeProvider, Button, AppBar } from "@mui/material";
+import { Tab, Tabs, Box, ThemeProvider, Button, AppBar, IconButton, Typography, Stack } from "@mui/material";
 // import { Menu } from "../Menu";
 import { getAuth } from "firebase/auth";
 import { db } from "../../Config/FireBase";
@@ -16,6 +16,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Events from "../Home/Events";
+import AllOutIcon from '@mui/icons-material/AllOut';
 
 
 export const Home = () => {
@@ -103,20 +104,13 @@ export const Home = () => {
                     borderRadius: 10,
                   }}
                 >
-                  <Link to="/calendarPage">
-                    <Button>
-                      Calendar
-                    </Button>
-                  </Link>
-                  <Link to="/notesPage">
-                    <Button>
-                      Notes
-                    </Button>
-                    <Link to="/flashcardsPage">
-                      <Button>
-                        Flashcards
-                      </Button>
-                    </Link>
+                  <Typography>
+                    FlashCards
+                  </Typography>
+                  <Link to="/flashcardsPage">
+                    <IconButton sx= {{fontSize: "large"}}>
+                      <AllOutIcon />
+                    </IconButton>
                   </Link>
                 </Paper>
               </Grid>
@@ -131,6 +125,11 @@ export const Home = () => {
                   }}
                 >
                   <HomeCalendar />
+                  <Link to="/calendarPage">
+                    <IconButton sx= {{fontSize: "large"}}>
+                      <AllOutIcon />
+                    </IconButton>
+                  </Link>
                 </Paper>
               </Grid>
               <Grid item xs={12} md={4} lg={7}>
@@ -145,6 +144,31 @@ export const Home = () => {
                 >
                   <Events />
                 </Paper>
+                  <Box marginTop={2} >
+                    <Paper sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 200,
+                    borderRadius: 10,
+                  }}>
+                    <Typography>
+                      Note's
+                    </Typography>
+                    <Stack direction="row">
+                    <Link to="/notesPage">
+                    <Button>
+                      Quick Note
+                    </Button>
+                  </Link>
+                    </Stack>
+                    <Link to="/notesPage">
+                    <IconButton sx= {{fontSize: "large"}}>
+                      <AllOutIcon />
+                    </IconButton>
+                  </Link>
+                    </Paper>
+                  </Box>
               </Grid>
             </Grid>
           </Container>
