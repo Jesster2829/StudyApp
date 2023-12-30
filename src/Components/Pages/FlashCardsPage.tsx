@@ -48,29 +48,37 @@ export function Flashcards() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [showAnswer, setShowAnswer] = React.useState(false);
   const [flashcards, setFlashcards] = React.useState<Flashcard[]>([]);
-  const flashcardsRef = collection(db, "FlashCards");
-  const maxSteps = flashcards.length;
+  //I want to get the className passed in through the params and then use that to filter the flashcards
+  const { className } = useParams();
 
+  console.log("chosen class",className)
+
+  const auth = getAuth();
+  const uid = auth.currentUser?.uid;
+  const flashcardsRef = collection(db, "users");
+  var maxSteps = flashcards.length;
   React.useEffect(() => {
-    const fetchFlashcards = async () => {
-      try {
-        const querySnapshot = await getDocs(flashcardsRef);
-        const data: Flashcard[] = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          Question: doc.data().Question,
-          Answer: doc.data().Answer,
-          Class_Name: doc.data().Class_Name,
-          User: doc.data().User,
-        }));
-        console.log(data);
-        setFlashcards(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+ 
+    const getUserFlashcards = async () => {
+      const userDoc = await getDocs(flashcardsRef);
+      const userDocSnapshot = userDoc.docs.map((doc) => doc.data());
+      console.log("userDocSnapshot",userDocSnapshot)
+      console.log("uid",uid)
+      const userDocSnapshotFiltered = userDocSnapshot.filter(
+        (doc) => doc.uid === uid
 
-    fetchFlashcards();
+      );
+      console.log("userDocSnapshotFiltered",userDocSnapshotFiltered)
+
+      const userFlashcards = userDocSnapshotFiltered[0].FlashCards;
+      setFlashcards(userFlashcards);
+      setActiveStep(0);
+      maxSteps = flashcards.length;
+      setShowAnswer(false);
+    };
+    getUserFlashcards();
   }, []);
+ 
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);

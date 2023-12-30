@@ -3,7 +3,7 @@ import { Tab, Tabs, Box, ThemeProvider, Button, AppBar } from "@mui/material";
 // import { Menu } from "../Menu";
 import { getAuth } from "firebase/auth";
 import { db } from "../../Config/FireBase";
-import { getDocs, collection, doc, setDoc } from "firebase/firestore";
+import { getDocs, collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { darker } from "../../themes";
 import { Link } from 'react-router-dom';
 import ResponsiveAppBar from "../PageHeaders/homeHeader";
@@ -25,72 +25,41 @@ export const Home = () => {
   //this is the picture of the user, if they have one. if not, it will be blank
   //this is the email of the user, if they have one. if not, it will be blank
   const email = auth.currentUser?.email;
-
-  //each user has a uid that is unique to them, so we can use that to filter the classes
-  //this list contains mine (Jesse's) uid. if you want to test yours out, go to console and 
-  //see what uid Prints out and replace it. this is a temp measure until we can get the database 
-  // and middleware working and communicating with each other
-  const lists = [
-    { user: "uelk3an6UuPAqsrCqa3CNdhkyA23", class: "CMPT 332", useremail: email },
-    { user: "uelk3an6UuPAqsrCqa3CNdhkyA23", class: "CMPT 317", useremail: email },
-    { user: "uelk3an6UuPAqsrCqa3CNdhkyA23", class: "CMPT 340", useremail: email },
-    { user: "2", class: "1" },
-    { user: "2", class: "2" },
-    { user: "2", class: "3" }
-  ];
-
   
-  if (auth.currentUser?.uid !== null) {
-    const userRef = collection(db, "users");
-    const user = {
-      uid: auth.currentUser?.uid,
-      email: auth.currentUser?.email,
-      TodoList: [],
-      FlashCards: [],
-      Notes: [],
-      Calendar: [],
-      Classes: [],
-    };
-
-    const addUser = async () => {
-      try {
-        await setDoc(doc(userRef, auth.currentUser?.uid), user);
-        console.log("Document written with ID: ", auth.currentUser?.uid);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
-    };
-    addUser();
-  }
-
-
-  //this is the reference to the classes collection in the database
-  const Classesreference = collection(db, "Classes");
-
   React.useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const data = await getDocs(Classesreference);
-        //so this function grabs the data, which is what we want from the database, then the id of each one. THis makes it 
-        // so that filtered classes is all classes with userId and class Name. currently there is no field for the linked notes
-        const filteredClasses = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id
-        }));
+    if (auth.currentUser?.uid !== null) {
+      const userRef = collection(db, "users");
+      const user = {
+        uid: auth.currentUser?.uid,
+        email: auth.currentUser?.email,
+        TodoList: [],
+        FlashCards: [],
+        Notes: [],
+        Calendar: [],
+        Classes: [],
+      };
 
-        console.log(filteredClasses);
-        console.log("Your UID : " + auth.currentUser?.uid);
-
-
-      } catch (error) {
-        console.log(error);
-      }
-
-    };
-    if (auth.currentUser !== null) {
-      handleTodoList(auth.currentUser?.uid)
+      const updateUser = async () => {
+        try {
+          const userDoc = doc(userRef, auth.currentUser?.uid);
+          const userDocSnapshot = await getDoc(userDoc);
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            if (!userData.uid || !userData.email || !userData.TodoList || !userData.FlashCards || !userData.Notes || !userData.Calendar || !userData.Classes) {
+              await setDoc(userDoc, user, { merge: true });
+              console.log("Document updated with ID: ", auth.currentUser?.uid);
+            } else {
+              console.log("Document already has all necessary fields!");
+            }
+          } else {
+            console.log("No such document!");
+          }
+        } catch (e) {
+          console.error("Error updating document: ", e);
+        }
+      };
+      updateUser();
     }
-    fetchClasses();
   }, []);
 
   return (
