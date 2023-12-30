@@ -34,6 +34,11 @@ export function FlashcardClass() {
     const handleClassDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDescription(event.target.value);
     };
+    const handleCancel = () => {
+        setOpen(false);
+        setClassName('');
+        setDescription('');
+    }
 
 
     return (
@@ -80,7 +85,7 @@ export function FlashcardClass() {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose} sx={{ color: 'primary.main', backgroundColor: 'secondary.main' }}>Cancel</Button>
-                        <Button onClick={handleClose} sx={{ color: 'primary.main', backgroundColor: 'secondary.main' }}>Create</Button>
+                        <Button onClick={handleCancel} sx={{ color: 'primary.main', backgroundColor: 'secondary.main' }}>Create</Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>

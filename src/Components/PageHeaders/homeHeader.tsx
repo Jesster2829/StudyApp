@@ -12,6 +12,7 @@ import { ThemeProvider } from '@emotion/react';
 import { darker } from '../../themes';
 import { Button, Stack } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -21,6 +22,7 @@ function ResponsiveAppBar() {
     // profile picture
     const auth = getAuth();
     const picture = auth.currentUser?.photoURL;
+    const navigate= useNavigate();
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -31,7 +33,9 @@ function ResponsiveAppBar() {
     };
 
     const returnToHome = () => {
-        window.location.href = '/homePage';
+        navigate('/homePage');
+
+
     }
     return (
         <ThemeProvider theme={darker}>
