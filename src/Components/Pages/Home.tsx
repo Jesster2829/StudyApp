@@ -1,5 +1,5 @@
 import React from "react";
-import { Tab, Tabs, AppBar, Box, ThemeProvider, Button, Stack } from "@mui/material";
+import { styled, Tab, Tabs, Box, ThemeProvider, Button, Stack, AppBar } from "@mui/material";
 // import { Menu } from "../Menu";
 import { getAuth } from "firebase/auth";
 import {db} from "../../Config/FireBase";
@@ -10,11 +10,15 @@ import ResponsiveAppBar from "../PageHeaders/homeHeader";
 import { HomeCalendar } from "../Calendar/homeCalendar";
 import TodoList from "../Home/TodoList";
 import { handleTodoList } from "../../FireBaseManagement/handleTodoList";
+import CssBaseline from '@mui/material/CssBaseline';
+import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Events from "../Home/Events";
 
 
 export const Home = () => {
-
-
   const [value, setValue] = React.useState(0);
   const [classes, setClasses] = React.useState([]); 
   const auth = getAuth();
@@ -75,31 +79,89 @@ export const Home = () => {
 
   return (
     <ThemeProvider theme={darker}>
-      <Stack direction="row">
-        <Stack direction="column" justifyContent="flex-end" alignItems="flex-start" width="70%">
-          <TodoList />
-          <HomeCalendar />
-        </Stack>
-        <Stack direction="column" justifyContent="flex-start" alignItems="flex-end" width="30%">
-          <ResponsiveAppBar />
-          <AppBar position="static" />
-          <Link to="/calendarPage">
-            <Button>
-              Calendar
-            </Button>
-          </Link>
-          <Link to="/notesPage">
-            <Button>
-              Notes
-            </Button>
-            <Link to="/flashcardsPage">
-            <Button>
-              Flashcards
-            </Button>
-            </Link>
-          </Link>
-        </Stack>
-      </Stack>
-    </ThemeProvider>
- );
+
+      <Box sx={{ display: 'flex' }}>
+              <CssBaseline />
+              <ResponsiveAppBar />
+              <Box
+                marginTop={7}
+                component="main"
+                sx={{
+                  flexGrow: 1,
+                  height: '100vh',
+                  overflow: 'auto',
+                }}
+              >
+                <Toolbar />
+                <Container maxWidth="lg" sx={{ mt: 5, mb: 1}}>
+                  <Grid container spacing={3}>
+                    {/* Chart */}
+                    <Grid item xs={12} md={8} lg={9}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: 240,
+                        }}
+                      >
+                        <TodoList />
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4} lg={3}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: 240,
+                        }}
+                      >
+                <Link to="/calendarPage">
+                  <Button>
+                    Calendar
+                  </Button>
+                </Link>
+                <Link to="/notesPage">
+                  <Button>
+                    Notes
+                  </Button>
+                  <Link to="/flashcardsPage">
+                  <Button>
+                    Flashcards
+                  </Button>
+                  </Link>
+                </Link>
+                      </Paper>
+                    </Grid>
+
+                    <Grid item xs={12} md={8} lg={5}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                      <HomeCalendar />
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4} lg={7}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: 240,
+                        }}
+                      >
+                        <Events />
+                      </Paper>
+                    </Grid>
+                  </Grid>
+                </Container>
+              </Box>
+            </Box>
+          </ThemeProvider>
+      );
 };
