@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { getAuth } from "firebase/auth";
 import { ThemeProvider } from '@emotion/react';
 import { darker } from '../../themes';
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -30,11 +30,15 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
+    const returnToHome = () => {
+        window.location.href = '/homePage';
+    }
     return (
         <ThemeProvider theme={darker}>
             <AppBar position="fixed"  sx={{ justifyContent: 'center', backgroundColor: 'secondary.main'}}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" padding={2}>
                     <MenuIcon sx={{color: 'primary.main'}}></MenuIcon>
+                    <Button onClick={returnToHome}>
                     <Typography
                         variant="h2"
                         sx={{
@@ -45,6 +49,7 @@ function ResponsiveAppBar() {
                     >
                         STUDiOUS
                     </Typography>
+                    </Button>
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
