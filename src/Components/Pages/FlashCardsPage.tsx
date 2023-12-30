@@ -90,6 +90,7 @@ export function Flashcards() {
     <ThemeProvider theme={darker}>
 
           <ResponsiveAppBar />
+          <br></br>
       <Stack paddingTop={7} direction="column" alignItems="center">
         <Box sx={{ flexGrow: 29, marginBottom: 2 }}>
           <Paper elevation={0} square>
