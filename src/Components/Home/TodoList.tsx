@@ -92,8 +92,8 @@ export default function TodoList() {
                 <ListItem
                 key={index}
                 sx={{
-                    width: '100%', // Make the TODO take up the entire width
-                    overflowX: 'auto', // Enable horizontal scrolling if needed
+                    width: '100%',
+                    overflowX: 'auto',
                 }}
                 secondaryAction={
                     <IconButton
