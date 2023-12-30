@@ -14,6 +14,7 @@ import { ThemeProvider } from "@emotion/react";
 import { darker } from "../../themes";
 import { Flashcards } from "./FlashCardsPage";
 import { useNavigate } from "react-router";
+import {FlashcardClass} from "../PopUps/FlashcardClass";
 
 
 const cards = [
@@ -93,8 +94,9 @@ export function FlashcardsSelection() {
               </Grid>
             ))}
           </Grid>
-        </Container>
+        </Container>  <FlashcardClass/>
       </main>
+    
     </ThemeProvider>
   );
 }
