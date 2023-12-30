@@ -9,9 +9,27 @@ import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
 import { ThemeProvider } from '@mui/material';
 import { lighter } from '../../themes';
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from '../../Config/FireBase';
+
 
 export default function TodoList() {
     const [checked, setChecked] = React.useState([0]);
+    const [todoList, setTodoList] = React.useState([]);
+
+    React.useEffect(() => {
+        const userRef = doc(db, 'users', 'userId'); // replace 'userId' with the actual user ID
+        const unsubscribe = onSnapshot(userRef, (doc) => {
+            const data = doc.data();
+            if (data?.TodoList) {
+                setTodoList(data.TodoList);
+                console.log(data.TodoList);
+            }
+        });
+
+        // Cleanup function to unsubscribe from the snapshot listener when the component unmounts
+        return () => unsubscribe();
+    }, []);
 
     const handleToggle = (value: number) => () => {
         const currentIndex = checked.indexOf(value);

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import ResponsiveAppBar from "../PageHeaders/homeHeader";
 import { HomeCalendar } from "../Calendar/homeCalendar";
 import TodoList from "../Home/TodoList";
+import { handleTodoList } from "../../FireBaseManagement/handleTodoList";
 
 
 export const Home = () => {
@@ -58,6 +59,9 @@ export const Home = () => {
       }
       
     };
+    if (auth.currentUser !== null) {
+      handleTodoList(auth.currentUser?.uid)
+    }
     fetchClasses();
   }, []);
 
