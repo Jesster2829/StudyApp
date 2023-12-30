@@ -5,6 +5,7 @@ import { Home } from './Components/Pages/Home';
 import './App.css';
 import { Calendar } from './Components/Pages/CalendarPage';
 import { Notes } from './Components/Pages/NotesPage';
+import { FlashcardsSelection } from './Components/Pages/FlashCardsSelectionPage';
 import { Flashcards } from './Components/Pages/FlashCardsPage';
 
 function App() {
@@ -17,7 +18,9 @@ function App() {
             <Route path="/homePage" element={<Home />} />
             <Route path="/calendarPage" element={<Calendar />} />
             <Route path="/notesPage" element={<Notes />} />
-            <Route path="/flashcardsPage" element={<Flashcards />} />
+            <Route path="/flashcardsPage" element={<FlashcardsSelection />} />
+            <Route path="/flashcards/:class" element={<Flashcards />} />
+            
 
           </Routes>
         </header>
