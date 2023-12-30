@@ -87,6 +87,7 @@ export const Home = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     height: 240,
+                    borderRadius: 10,
                   }}
                 >
                   <TodoList />
@@ -99,6 +100,7 @@ export const Home = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     height: 240,
+                    borderRadius: 10,
                   }}
                 >
                   <Link to="/calendarPage">
@@ -125,6 +127,7 @@ export const Home = () => {
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
+                    borderRadius: 10,
                   }}
                 >
                   <HomeCalendar />
@@ -137,6 +140,7 @@ export const Home = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     height: 240,
+                    borderRadius: 10,
                   }}
                 >
                   <Events />
