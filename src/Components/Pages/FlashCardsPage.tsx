@@ -14,14 +14,7 @@ import { darker } from "../../themes";
 import { db } from "../../Config/FireBase";
 import { getDocs, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-
-interface Flashcards {
-  Question: string;
-  Answer: string;
-  Class_Name: string;
-  User: string;
-  id: string;
-}
+import { Flashcard } from "../../FireBaseManagement/AppBaseTypes";
 
 const steps = [
   {
@@ -54,7 +47,7 @@ export function Flashcards() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const [showAnswer, setShowAnswer] = React.useState(false);
-  const [flashcards, setFlashcards] = React.useState<Flashcards[]>([]);
+  const [flashcards, setFlashcards] = React.useState<Flashcard[]>([]);
   const flashcardsRef = collection(db, "FlashCards");
   const maxSteps = flashcards.length;
 
@@ -62,7 +55,7 @@ export function Flashcards() {
     const fetchFlashcards = async () => {
       try {
         const querySnapshot = await getDocs(flashcardsRef);
-        const data: Flashcards[] = querySnapshot.docs.map((doc) => ({
+        const data: Flashcard[] = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           Question: doc.data().Question,
           Answer: doc.data().Answer,
@@ -95,8 +88,9 @@ export function Flashcards() {
 
   return (
     <ThemeProvider theme={darker}>
-      <Stack direction="column" alignItems="center">
-        <ResponsiveAppBar />
+
+          <ResponsiveAppBar />
+      <Stack paddingTop={7} direction="column" alignItems="center">
         <Box sx={{ flexGrow: 29, marginBottom: 2 }}>
           <Paper elevation={0} square>
             <Button onClick={toggleShowAnswer} color="secondary">

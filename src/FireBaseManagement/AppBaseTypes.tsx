@@ -14,5 +14,13 @@ export interface Task {
 export interface User {
     Name: string;
     Email: string;
-    
+
+}
+
+export interface Flashcard {
+    Question: string;
+    Answer: string;
+    Class_Name: string;
+    User: string;
+    id: string;
 }

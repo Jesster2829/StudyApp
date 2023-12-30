@@ -95,7 +95,6 @@ export const Home = () => {
                 <Toolbar />
                 <Container maxWidth="lg" sx={{ mt: 5, mb: 1}}>
                   <Grid container spacing={3}>
-                    {/* Chart */}
                     <Grid item xs={12} md={8} lg={9}>
                       <Paper
                         sx={{
