@@ -43,7 +43,7 @@ export function FlashcardClass({
     if (className !== "" || description !== "") {
       const userDoc = doc(userRef, uid);
       //check if class name already exists
-      
+
         const userDocSnapshot = await getDoc(userDoc);
         const userData = userDocSnapshot.data();
         const userClasses = userData?.Classes || [];
@@ -121,7 +121,6 @@ export function FlashcardClass({
             />
             <TextField
               autoFocus
-              //   margin="dense"
               id="description"
               label="Class Description"
               type="description"

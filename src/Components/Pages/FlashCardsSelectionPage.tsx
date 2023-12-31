@@ -51,7 +51,6 @@ export function FlashcardsSelection() {
 
   return (
     <ThemeProvider theme={darker}>
-      <CssBaseline />
       <ResponsiveAppBar />
       <main>
         <Container sx={{ py: 8 }} maxWidth="md">
@@ -64,7 +63,7 @@ export function FlashcardsSelection() {
           ) : (
             <Grid container spacing={4}>
               {UserClasses.map((card) => (
-                <Grid item key={card.className} xs={12} sm={6} md={4}>
+                <Grid item key={card.className} xs={"auto"} sm={6} md={"auto"}  >
                   <Card
                     sx={{
                       height: "100%",
@@ -83,7 +82,7 @@ export function FlashcardsSelection() {
                       <Typography gutterBottom variant="h5" component="h2">
                         {card.className}
                       </Typography>
-                      <Typography>{card.description}</Typography>
+                      <Typography >{card.description}</Typography>
                     </CardContent>
                     <CardActions>
                       <Button
@@ -100,6 +99,7 @@ export function FlashcardsSelection() {
                         name={card.className}
                         description={card.description}
                         getUserClasses={getUserClasses}
+                        color={card.color}
                       />
                     </CardActions>
                   </Card>
