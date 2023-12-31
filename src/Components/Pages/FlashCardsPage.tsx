@@ -17,6 +17,7 @@ import { getAuth } from "firebase/auth";
 import { Flashcard } from "../../FireBaseManagement/AppBaseTypes";
 import { NewFlashCard } from "../PopUps/NewFlashCard";
 import { Grid } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 
 
@@ -30,24 +31,22 @@ export function Flashcards({ClassName}: {ClassName: string}) {
   const uid = auth.currentUser?.uid;
   const flashcardsRef = collection(db, "users");
   var maxSteps = flashcards.length;
+  
+  const location = useLocation();
+  const ClassNameReceived= location.state?.ClassName || "";
 
 
   const getUserFlashcards = async () => {
+
     const userDoc = await getDocs(flashcardsRef);
     const userDocSnapshot = userDoc.docs.map((doc) => doc.data());
     const userDocSnapshotFiltered = userDocSnapshot.filter(
       (doc) => doc.uid === uid
 
     );
-    console.log("userDocSnapshotFiltered",userDocSnapshotFiltered)
-
     const userFlashcards = userDocSnapshotFiltered[0].FlashCards;
     const data= userFlashcards.map((doc: { NewFlashCard: Flashcard; }) => doc.NewFlashCard);
-    console.log("Class Name",ClassName)
-    const filtered= data.filter((doc: { Class_Name: string; }) => doc.Class_Name === ClassName);
-  
-
-    
+    const filtered= data.filter((doc: { Class_Name: string; }) => doc.Class_Name === ClassNameReceived);
 
     setFlashcards(filtered);
     console.log("userFlashcards",userFlashcards)
@@ -56,8 +55,6 @@ export function Flashcards({ClassName}: {ClassName: string}) {
     setShowAnswer(false);
 };
   React.useEffect(() => {
- 
-    
     getUserFlashcards();
   }, []);
  

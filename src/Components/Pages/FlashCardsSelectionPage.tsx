@@ -15,6 +15,8 @@ import { getDocs, collection } from "firebase/firestore";
 import { FlashCardSetEdit } from "../PopUps/SelectedFlashCardSet";
 import { Box } from "@mui/system";
 import { Paper } from "@mui/material";
+import { useParams } from "react-router-dom";
+
 
 
 export function FlashcardsSelection() {
@@ -26,8 +28,6 @@ export function FlashcardsSelection() {
   >([]);
   const [loading, setLoading] = React.useState(true);
   const flashcardsRef = collection(db, "users");
-
-
 
   const getUserClasses = async () => {
     const userDoc = await getDocs(flashcardsRef);
@@ -45,9 +45,7 @@ export function FlashcardsSelection() {
   }, []);
 
   function chosenFlashcards(className: string) {
-    console.log("changing to:", className)
-    localStorage.setItem("className", className);
-    navigate(`/flashcards`);
+    navigate(`/flashcards`,{state:{ClassName: className}});
   }
 
   return (
