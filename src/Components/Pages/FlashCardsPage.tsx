@@ -74,8 +74,13 @@ export function Flashcards() {
           <br></br>
       <Stack paddingTop={7} direction="column" alignItems="center">
         <Box sx={{ flexGrow: 29, marginBottom: 2 }}>
-          <Paper elevation={0} square>
-            <Button onClick={toggleShowAnswer} color="secondary">
+        <Paper elevation={0} square sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 240,
+                    borderRadius: 10,
+                  }}>            <Button onClick={toggleShowAnswer} color="secondary">
               <Flipper flipKey={showAnswer}>
                 <Flipped flipId="box">
                   <Box sx={{ maxWidth: 400, p: 1 }}>
