@@ -17,7 +17,8 @@ import { getAuth } from "firebase/auth";
 import { db } from "../../Config/FireBase";
 import { getDocs, collection } from "firebase/firestore";
 import { FlashCardSetEdit } from "../PopUps/SelectedFlashCardSet";
-
+import { Box } from "@mui/system";
+import {Paper} from "@mui/material";
 export function FlashcardsSelection() {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -51,65 +52,71 @@ export function FlashcardsSelection() {
 
   return (
     <ThemeProvider theme={darker}>
-      <ResponsiveAppBar />
-      <main>
-        <Container sx={{ py: 8 }} maxWidth="md">
-          {loading ? (
-            <Typography variant="h5">Loading...</Typography>
-          ) : UserClasses.length === 0 ? (
-            <Typography variant="h5" color={"primary.main"}>
-              No Classes/Sets
-            </Typography>
-          ) : (
-            <Grid container spacing={4}>
-              {UserClasses.map((card) => (
-                <Grid item key={card.className} xs={"auto"} sm={6} md={"auto"}  >
-                  <Card
+    <ResponsiveAppBar />
+  
+    <main>
+      <Container sx={{ py: 8 }} maxWidth="md">
+        {loading ? (
+          <Typography variant="h5">Loading...</Typography>
+        ) : UserClasses.length === 0 ? (
+          <Typography variant="h5" color="primary.main">
+            No Classes/Sets
+          </Typography>
+        ) : (
+          <Box display="flex" flexWrap="wrap" justifyContent="space-around">
+            {UserClasses.map((card) => (
+              <Paper
+                key={card.className}
+                elevation={3}
+                sx={{
+                  width: 345,
+                  margin: 2,
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                 <Box
+                component="div"
+                sx={{
+                  backgroundColor: card.color,
+                  height: 12, // Adjust the height as needed
+                }}
+              />
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {card.className}
+                  </Typography>
+                  <Typography>{card.description}</Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    onClick={() => chosenFlashcards(card.className)}
                     sx={{
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
+                      color: "primary.main",
+                      backgroundColor: "secondary.main",
                     }}
                   >
-                    <CardMedia
-                      component="div"
-                      sx={{
-                        pt: "5%",
-                        backgroundColor: card.color,
-                      }}
-                    />
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {card.className}
-                      </Typography>
-                      <Typography >{card.description}</Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        size="small"
-                        onClick={() => chosenFlashcards(card.className)}
-                        sx={{
-                          color: "primary.main",
-                          backgroundColor: "secondary.main",
-                        }}
-                      >
-                        View
-                      </Button>
-                      <FlashCardSetEdit
-                        name={card.className}
-                        description={card.description}
-                        getUserClasses={getUserClasses}
-                        color={card.color}
-                      />
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          )}
-        </Container>
-        <FlashcardClass getUserClasses={getUserClasses} />
-      </main>
-    </ThemeProvider>
+                    View
+                  </Button>
+                  <FlashCardSetEdit
+                    name={card.className}
+                    description={card.description}
+                    getUserClasses={getUserClasses}
+                    color={card.color}
+                  />
+                </CardActions>
+              </Paper>
+            ))}
+          </Box>
+        )}
+      </Container>
+  
+      <FlashcardClass getUserClasses={getUserClasses} />
+    </main>
+  </ThemeProvider>
+  
+
   );
 }

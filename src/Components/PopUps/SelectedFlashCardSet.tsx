@@ -131,7 +131,7 @@ export function FlashCardSetEdit({
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Editing flash set:" + name}</DialogTitle>
+        <DialogTitle>{"Editing flash set: \"" + name+"\""}</DialogTitle>
         <DialogContent>
           <TextField
             id="filled-textarea"
