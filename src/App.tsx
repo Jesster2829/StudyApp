@@ -19,8 +19,7 @@ function App() {
             <Route path="/calendarPage" element={<Calendar />} />
             <Route path="/notesPage" element={<Notes />} />
             <Route path="/flashcardsPage" element={<FlashcardsSelection />} />
-            <Route path="/flashcards/:class" element={<Flashcards />} />
-            
+            <Route path="/flashcards" element={<Flashcards ClassName={localStorage.getItem("className") || ""} />} />
 
           </Routes>
         </header>

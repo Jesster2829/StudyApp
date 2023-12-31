@@ -14,16 +14,17 @@ import { getAuth } from "firebase/auth";
 import { collection, doc, setDoc, updateDoc,getDoc } from "firebase/firestore";
 import { arrayUnion } from "firebase/firestore";
 import { ColorPicker } from "./ColorPicker";
+import { Flashcard } from "../../FireBaseManagement/AppBaseTypes";
 
-export function FlashcardClass({
-  getUserClasses,
+export function NewFlashCard({
+  getFlashCards, className
 }: {
-  getUserClasses: () => void;
+  getFlashCards: () => void;
+    className: string;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [className, setClassName] = React.useState("");
+  const [Question, setQuestion] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [color, setColor] = React.useState("");
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
   const userRef = collection(db, "users");
@@ -35,51 +36,51 @@ export function FlashcardClass({
   };
 
   const handleClose = async () => {
-    if (className !== "" || description !== "") {
-      const userDoc = doc(userRef, uid);
+    if (Question !== "" || description !== "") {
+        console.log(uid )
+        console.log(auth.currentUser?.email ?? "")
 
-        const userDocSnapshot = await getDoc(userDoc);
-        const userData = userDocSnapshot.data();
-        const userClasses = userData?.Classes || [];
-        const classExists = userClasses.some((c: { className: string }) => c.className === className);
 
-        if (classExists) {
-          alert("Class name already exists");
-          return;
+        const userDoc = doc(db, "users", uid || "");
+
+        const NewFlashCard: Flashcard = {
+            Question: Question,
+            Answer: description,
+            id: uid ?? "",
+            User: auth.currentUser?.email ?? "",
+            Class_Name: className,
         }
 
         await updateDoc(userDoc, {
-        Classes: arrayUnion({
-          className: className,
-          description: description,
-          color: color === "" ? "secondary.main" : color,
-        }),
-      });
+            FlashCards: arrayUnion({
+                NewFlashCard
+            }),
+        });
+
+      
       console.log("done");
       setOpen(false);
-      getUserClasses();
-      setClassName("");
+      getFlashCards();
+      setQuestion("");
       setDescription("");
     } else {
       alert("Please fill out all fields");
     }
   };
-  const setColorChange = (color: string) => {
-    setColor(color);
-  }
-  const handleClassNameChange = (
+
+  const handleQuestionChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setClassName(event.target.value);
+    setQuestion(event.target.value);
   };
-  const handleClassDescriptionChange = (
+  const handleAnswerChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setDescription(event.target.value);
   };
   const handleCancel = () => {
     setOpen(false);
-    setClassName("");
+    setQuestion("");
     setDescription("");
   };
 
@@ -91,41 +92,39 @@ export function FlashcardClass({
           sx={{
             color: "primary.main",
             backgroundColor: "secondary.main",
-            fontSize: "large",
             outline: "2px solid #373c50",
           }}
         >
-          <AddIcon fontSize="large" />
+          <AddIcon fontSize="small" />
         </IconButton>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Create</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To create a class for flashcards, please enter the name of the
-              class
+              Create New FlashCard
             </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
               id="name"
-              label="Class Name"
+              label="Question"
               type="name"
+              multiline
               fullWidth
               variant="standard"
-              value={className}
-              onChange={handleClassNameChange}
+              value={Question}
+              onChange={handleQuestionChange}
             />
             <TextField
               autoFocus
               id="description"
-              label="Class Description"
+              label="Answer"
               type="description"
               multiline
               fullWidth
               variant="standard"
-              onChange={handleClassDescriptionChange}
+              onChange={handleAnswerChange}
             />
-            <ColorPicker newColor={setColorChange}/>
           </DialogContent>
           <DialogActions>
             <Button

@@ -1,11 +1,7 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import ResponsiveAppBar from "../PageHeaders/homeHeader";
@@ -18,7 +14,9 @@ import { db } from "../../Config/FireBase";
 import { getDocs, collection } from "firebase/firestore";
 import { FlashCardSetEdit } from "../PopUps/SelectedFlashCardSet";
 import { Box } from "@mui/system";
-import {Paper} from "@mui/material";
+import { Paper } from "@mui/material";
+
+
 export function FlashcardsSelection() {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -27,8 +25,9 @@ export function FlashcardsSelection() {
     { className: string; description: string; color: string }[]
   >([]);
   const [loading, setLoading] = React.useState(true);
-
   const flashcardsRef = collection(db, "users");
+
+
 
   const getUserClasses = async () => {
     const userDoc = await getDocs(flashcardsRef);
@@ -37,7 +36,6 @@ export function FlashcardsSelection() {
       (doc) => doc.uid === uid
     );
     const userClasses = userDocSnapshotFiltered[0]?.Classes || [];
-    console.log("userClasses", userClasses);
     setUserClasses(userClasses);
     setLoading(false);
   };
@@ -47,76 +45,89 @@ export function FlashcardsSelection() {
   }, []);
 
   function chosenFlashcards(className: string) {
-    navigate(`/flashcards/${className}`);
+    console.log("changing to:", className)
+    localStorage.setItem("className", className);
+    navigate(`/flashcards`);
   }
 
   return (
     <ThemeProvider theme={darker}>
-    <ResponsiveAppBar />
-  
-    <main>
-      <Container sx={{ py: 8 }} maxWidth="md">
-        {loading ? (
-          <Typography variant="h5">Loading...</Typography>
-        ) : UserClasses.length === 0 ? (
-          <Typography variant="h5" color="primary.main">
-            No Classes/Sets
-          </Typography>
-        ) : (
-          <Box display="flex" flexWrap="wrap" justifyContent="space-around">
-            {UserClasses.map((card) => (
-              <Paper
-                key={card.className}
-                elevation={3}
-                sx={{
-                  width: 345,
-                  margin: 2,
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                 <Box
-                component="div"
-                sx={{
-                  backgroundColor: card.color,
-                  height: 12, // Adjust the height as needed
-                }}
-              />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {card.className}
-                  </Typography>
-                  <Typography>{card.description}</Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    onClick={() => chosenFlashcards(card.className)}
-                    sx={{
-                      color: "primary.main",
-                      backgroundColor: "secondary.main",
-                    }}
-                  >
-                    View
-                  </Button>
-                  <FlashCardSetEdit
-                    name={card.className}
-                    description={card.description}
-                    getUserClasses={getUserClasses}
-                    color={card.color}
-                  />
-                </CardActions>
-              </Paper>
-            ))}
-          </Box>
-        )}
-      </Container>
-  
-      <FlashcardClass getUserClasses={getUserClasses} />
-    </main>
-  </ThemeProvider>
-  
+      <ResponsiveAppBar />
 
+      <main>
+        <Container sx={{ py: 8 }} maxWidth="md">
+          {loading ? (
+            <Typography variant="h5">Loading...</Typography>
+          ) : UserClasses.length === 0 ? (
+            <Typography variant="h5" color="primary.main">
+              No Classes/Sets
+            </Typography>
+          ) : (
+            <Box display="flex" flexWrap="wrap" justifyContent="space-around">
+              {UserClasses.map((card) => (
+                <Paper
+                  key={card.className}
+                  elevation={3}
+                  sx={{
+                    width: 345,
+                    margin: 2,
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Box
+                    component="div"
+                    sx={{
+                      backgroundColor: card.color,
+                      height: 12, 
+                    }}
+                  />
+                  <CardContent sx={{ flexGrow: 1, overflow: "hidden" }}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {card.className}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        wordWrap: "break-word",
+                        WebkitLineClamp: 10,
+                        maxHeight: "6em",
+                        
+                      }}
+                    >
+                      {card.description}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      onClick={() => chosenFlashcards(card.className)}
+                      sx={{
+                        color: "primary.main",
+                        backgroundColor: "secondary.main",
+                      }}
+                    >
+                      View
+                    </Button>
+                    <FlashCardSetEdit
+                      name={card.className}
+                      description={card.description}
+                      getUserClasses={getUserClasses}
+                      oldcolor={card.color}
+                    />
+                  </CardActions>
+                </Paper>
+              ))}
+            </Box>
+          )}
+        </Container>
+
+        <FlashcardClass getUserClasses={getUserClasses} />
+      </main>
+    </ThemeProvider>
   );
 }

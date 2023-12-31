@@ -12,7 +12,7 @@ export function ColorPicker({
     newColor,
  
   }: {
-    newColor: string;
+    newColor: (color:string) => void;
   }) {
   const [selectedColor, setSelectedColor] = useState("");
   const [showPicker, setShowPicker] = useState(false);
@@ -49,7 +49,7 @@ export function ColorPicker({
   const handleColorClick = (color: string) => {
     setSelectedColor(color);
     console.log(`Selected color: ${color}`);
-    newColor = color;
+    newColor(color);
     handleClose();
   };
 

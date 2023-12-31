@@ -15,40 +15,49 @@ import { db } from "../../Config/FireBase";
 import { getDocs, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { Flashcard } from "../../FireBaseManagement/AppBaseTypes";
+import { NewFlashCard } from "../PopUps/NewFlashCard";
+import { Grid } from "@mui/material";
 
 
-export function Flashcards() {
+
+export function Flashcards({ClassName}: {ClassName: string}) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const [showAnswer, setShowAnswer] = React.useState(false);
   const [flashcards, setFlashcards] = React.useState<Flashcard[]>([]);
-  const { className } = useParams();
-
-  console.log("chosen class",className)
 
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
   const flashcardsRef = collection(db, "users");
   var maxSteps = flashcards.length;
+
+
+  const getUserFlashcards = async () => {
+    const userDoc = await getDocs(flashcardsRef);
+    const userDocSnapshot = userDoc.docs.map((doc) => doc.data());
+    const userDocSnapshotFiltered = userDocSnapshot.filter(
+      (doc) => doc.uid === uid
+
+    );
+    console.log("userDocSnapshotFiltered",userDocSnapshotFiltered)
+
+    const userFlashcards = userDocSnapshotFiltered[0].FlashCards;
+    const data= userFlashcards.map((doc: { NewFlashCard: Flashcard; }) => doc.NewFlashCard);
+    console.log("Class Name",ClassName)
+    const filtered= data.filter((doc: { Class_Name: string; }) => doc.Class_Name === ClassName);
+  
+
+    
+
+    setFlashcards(filtered);
+    console.log("userFlashcards",userFlashcards)
+    setActiveStep(0);
+    maxSteps = flashcards.length;
+    setShowAnswer(false);
+};
   React.useEffect(() => {
  
-    const getUserFlashcards = async () => {
-      const userDoc = await getDocs(flashcardsRef);
-      const userDocSnapshot = userDoc.docs.map((doc) => doc.data());
-      console.log("userDocSnapshot",userDocSnapshot)
-      console.log("uid",uid)
-      const userDocSnapshotFiltered = userDocSnapshot.filter(
-        (doc) => doc.uid === uid
-
-      );
-      console.log("userDocSnapshotFiltered",userDocSnapshotFiltered)
-
-      const userFlashcards = userDocSnapshotFiltered[0].FlashCards;
-      setFlashcards(userFlashcards);
-      setActiveStep(0);
-      maxSteps = flashcards.length;
-      setShowAnswer(false);
-    };
+    
     getUserFlashcards();
   }, []);
  
@@ -69,34 +78,45 @@ export function Flashcards() {
 
   return (
     <ThemeProvider theme={darker}>
-
-          <ResponsiveAppBar />
-          <br></br>
-      <Stack paddingTop={7} direction="column" alignItems="center">
-        <Box sx={{ flexGrow: 29, marginBottom: 2 }}>
-        <Paper elevation={0} square sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                    borderRadius: 10,
-                  }}>            <Button onClick={toggleShowAnswer} color="secondary">
-              <Flipper flipKey={showAnswer}>
-                <Flipped flipId="box">
-                  <Box sx={{ maxWidth: 400, p: 1 }}>
-                    {flashcards.length > 0 ? (
-                      showAnswer
-                        ? flashcards[activeStep].Answer
-                        : flashcards[activeStep].Question
-                    ) : (
-                      "Loading..."
-                    )}
-                  </Box>
-                </Flipped>
-              </Flipper>
-            </Button>
-          </Paper>
-        </Box>
+    <ResponsiveAppBar />
+    <br></br>
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      spacing={2}
+    >
+      <Grid item xs={12} md={8} lg={6}>
+        <Paper
+          elevation={0}
+          square
+          sx={{
+            p: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            height: 240,
+            borderRadius: 10,
+          }}
+        >
+          <Button onClick={toggleShowAnswer} color="secondary">
+            <Flipper flipKey={showAnswer}>
+              <Flipped flipId="box">
+                <Box sx={{ maxWidth: 400, p: 1 }}>
+                  {flashcards.length > 0 ? (
+                    showAnswer
+                      ? flashcards[activeStep].Answer
+                      : flashcards[activeStep].Question
+                  ) : (
+                    "Loading..."
+                  )}
+                </Box>
+              </Flipped>
+            </Flipper>
+          </Button>
+        </Paper>
+      </Grid>
+  
+      <Grid item xs={12} md={8} lg={6}>
         <MobileStepper
           variant="text"
           steps={maxSteps}
@@ -132,10 +152,15 @@ export function Flashcards() {
           }
           sx={{
             position: "fixed",
-            bottom: theme.spacing(50),
+            bottom: theme.spacing(4),
           }}
         />
-      </Stack>
-    </ThemeProvider>
+      </Grid>
+  
+      <Grid item xs={12} md={8} lg={6}>
+        <NewFlashCard getFlashCards={getUserFlashcards} className={ClassName} />
+      </Grid>
+    </Grid>
+  </ThemeProvider>
   );
 }

@@ -14,7 +14,6 @@ import { TransitionProps } from "@mui/material/transitions";
 import { db } from "../../Config/FireBase";
 import { getAuth } from "firebase/auth";
 import { collection, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
-import { arrayUnion } from "firebase/firestore";
 import { ColorPicker } from "./ColorPicker";
 
 const Transition = React.forwardRef(function Transition(
@@ -30,12 +29,12 @@ export function FlashCardSetEdit({
   name,
   description,
   getUserClasses,
-  color
+  oldcolor
 }: {
   name: string;
   description: string;
   getUserClasses: () => void;
-  color: string;
+  oldcolor: string;
 }) {
   const oldName = name;
   const oldDescription = description;
@@ -43,8 +42,7 @@ export function FlashCardSetEdit({
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] =
     React.useState(false);
   const [newDescription, setNewDescription] = React.useState("");
-  const [newColor, setNewColor] = React.useState("");
-  
+  const [newColor, setNewColor] = React.useState(oldcolor);
   
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
@@ -59,38 +57,44 @@ export function FlashCardSetEdit({
     setNewDescription(oldDescription);
   };
 
-  const handleSave = async () => {
-    console.log("saving new color is: ", newColor)
+const handleSave = async () => {
+    console.log("saving new color is: ", newColor);
     if (newDescription === "") {
-      alert("Description cannot be empty");
-      return;
+        alert("Description cannot be empty");
+        return;
     }
-    const userDoc= doc(userRef, uid);
+    const userDoc = doc(userRef, uid);
     const userDocSnapshot = await getDoc(userDoc);
     const userData = userDocSnapshot.data();
     const userClasses = userData?.Classes;
 
-    if (newColor === "") {
-        setNewColor(color);
-        }
-   
-    if(userClasses.length !== 0){
-        const newClasses = userClasses.map((c: { className: string; description: string, color: string }) => {
-        if(c.className === oldName){
-            return {className: oldName, description: newDescription, color: "primary.main"}
-        }
-        return c;
+    const colorToSave = newColor === "" ? oldcolor : newColor;
+
+    if (userClasses.length !== 0) {
+        const newClasses = userClasses.map((c: {
+            className: string;
+            description: string;
+            color: string;
+        }) => {
+            if (c.className === oldName) {
+                return { className: oldName, description: newDescription, color: colorToSave };
+            }
+            return c;
         });
         await updateDoc(userDoc, {
-            
-        Classes: newClasses,
+            Classes: newClasses,
         });
-        
-        }
-    const classDoc = setOpen(false);
+    }
+
+    setOpen(false);
     setNewColor("");
     getUserClasses();
-  };
+};
+
+const handleColorChange = (color: string) => {
+    setNewColor(color);
+};
+
 
   const handleDelete = async () => {
     setDeleteConfirmationOpen(true);
@@ -156,14 +160,13 @@ export function FlashCardSetEdit({
           >
             Save
           </Button>
-          <ColorPicker newColor={newColor}/>
+          <ColorPicker newColor={handleColorChange}/>
           <Button
             onClick={handleDelete}
             sx={{ color: "secondary.main", backgroundColor: "primary.main" }}
           >
             Delete
           </Button>
-          
         </DialogActions>
       </Dialog>
       <Dialog
