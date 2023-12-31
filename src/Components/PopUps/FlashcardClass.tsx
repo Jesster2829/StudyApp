@@ -7,23 +7,37 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { IconButton, ThemeProvider } from '@mui/material';
-import { darker, lighter } from '../../themes';
+import { darker} from '../../themes';
 import AddIcon from '@mui/icons-material/Add';
-import { AddShoppingCart } from '@mui/icons-material';
+import {db} from '../../Config/FireBase';
+import { getAuth } from 'firebase/auth';
+import { collection, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { arrayUnion } from 'firebase/firestore';
 
-export function FlashcardClass() {
+
+export function FlashcardClass({ getUserClasses }: { getUserClasses: () => void } ) {
     const [open, setOpen] = React.useState(false);
     const [className, setClassName] = React.useState('');
     const [description, setDescription] = React.useState('');
+    const auth = getAuth();
+    const uid = auth.currentUser?.uid;
+    const userRef = collection(db, 'users');
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
-    const handleClose = () => {
-        console.log("class entered is", className);
-        console.log("description entered is", description);
+    const handleClose = async () => {
+        const userDoc = doc(userRef, uid);
+        await updateDoc(userDoc, {
+            Classes: arrayUnion({
+                className: className,
+                description: description,
+            }),
+        });
+        console.log("done")
         setOpen(false);
+        getUserClasses();
         setClassName('');
         setDescription(''); 
     };
@@ -84,8 +98,8 @@ export function FlashcardClass() {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} sx={{ color: 'primary.main', backgroundColor: 'secondary.main' }}>Cancel</Button>
-                        <Button onClick={handleCancel} sx={{ color: 'primary.main', backgroundColor: 'secondary.main' }}>Create</Button>
+                        <Button onClick={handleCancel} sx={{ color: 'primary.main', backgroundColor: 'secondary.main' }}>Cancel</Button>
+                        <Button onClick={handleClose} sx={{ color: 'primary.main', backgroundColor: 'secondary.main' }}>Create</Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>

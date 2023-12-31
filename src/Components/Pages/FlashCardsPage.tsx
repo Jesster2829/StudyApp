@@ -16,39 +16,12 @@ import { getDocs, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { Flashcard } from "../../FireBaseManagement/AppBaseTypes";
 
-const steps = [
-  {
-    question: `What is the way to pass cmpt 332`,
-    answer: `Don't take it`,
-  },
-  {
-    question: "What is the most useless class you can take?",
-    answer: `Why of course it is cmpt 370`,
-  },
-  {
-    question: `What is the main component of a computer?`,
-    answer: `According to Dwight, the operating system`,
-  },
-  {
-    question: `What is the capital of France?`,
-    answer: `Paris`,
-  },
-  {
-    question: `Who painted the Mona Lisa?`,
-    answer: `Leonardo da Vinci`,
-  },
-  {
-    question: `What is the largest planet in our solar system?`,
-    answer: `Jupiter`,
-  },
-];
 
 export function Flashcards() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const [showAnswer, setShowAnswer] = React.useState(false);
   const [flashcards, setFlashcards] = React.useState<Flashcard[]>([]);
-  //I want to get the className passed in through the params and then use that to filter the flashcards
   const { className } = useParams();
 
   console.log("chosen class",className)

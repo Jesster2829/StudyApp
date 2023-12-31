@@ -24,3 +24,7 @@ export interface Flashcard {
     User: string;
     id: string;
 }
+export interface Class {
+    Name: string;
+    Description: string;
+}
