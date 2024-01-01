@@ -20,7 +20,7 @@ function App() {
             <Route path="/calendarPage" element={<Calendar />} />
             <Route path="/notesPage" element={<Notes />} />
             <Route path="/flashcardsPage" element={<FlashcardsSelection />} />
-            <Route path="/flashcards" element={<Flashcards ClassName={localStorage.getItem("className") || ""} />} />
+            <Route path="/flashcards" element={<Flashcards />} />
             <Route path="/AccountPage" element={<AccountPage />} />
           </Routes>
         </header>

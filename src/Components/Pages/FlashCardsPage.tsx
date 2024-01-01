@@ -21,7 +21,7 @@ import { useLocation } from "react-router-dom";
 
 
 
-export function Flashcards({ClassName}: {ClassName: string}) {
+export function Flashcards() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const [showAnswer, setShowAnswer] = React.useState(false);
@@ -45,9 +45,11 @@ export function Flashcards({ClassName}: {ClassName: string}) {
 
     );
     const userFlashcards = userDocSnapshotFiltered[0].FlashCards;
+    console.log("userFlashcards",userFlashcards)
     const data= userFlashcards.map((doc: { NewFlashCard: Flashcard; }) => doc.NewFlashCard);
+  
     const filtered= data.filter((doc: { Class_Name: string; }) => doc.Class_Name === ClassNameReceived);
-
+    console.log(filtered)
     setFlashcards(filtered);
     console.log("userFlashcards",userFlashcards)
     setActiveStep(0);
@@ -155,7 +157,7 @@ export function Flashcards({ClassName}: {ClassName: string}) {
       </Grid>
   
       <Grid item xs={12} md={8} lg={6}>
-        <NewFlashCard getFlashCards={getUserFlashcards} className={ClassName} />
+        <NewFlashCard getFlashCards={getUserFlashcards} className={ClassNameReceived} />
       </Grid>
     </Grid>
   </ThemeProvider>
