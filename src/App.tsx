@@ -7,6 +7,7 @@ import { Calendar } from './Components/Pages/CalendarPage';
 import { Notes } from './Components/Pages/NotesPage';
 import { FlashcardsSelection } from './Components/Pages/FlashCardsSelectionPage';
 import { Flashcards } from './Components/Pages/FlashCardsPage';
+import { AccountPage } from './Components/Pages/Account';
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
             <Route path="/notesPage" element={<Notes />} />
             <Route path="/flashcardsPage" element={<FlashcardsSelection />} />
             <Route path="/flashcards" element={<Flashcards ClassName={localStorage.getItem("className") || ""} />} />
-
+            <Route path="/AccountPage" element={<AccountPage />} />
           </Routes>
         </header>
       </div>

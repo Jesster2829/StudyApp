@@ -14,7 +14,7 @@ import { Button, Stack } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Account', 'Logout'];
 
 function ResponsiveAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -28,7 +28,10 @@ function ResponsiveAppBar() {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (setting: string) => {
+        if (setting === 'Account') {
+            navigate('/AccountPage');
+        }
         setAnchorElUser(null);
     };
 
@@ -77,7 +80,7 @@ function ResponsiveAppBar() {
                         onClose={handleCloseUserMenu}
                         >
                         {settings.map((setting) => (
-                            <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                            <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
                             <Typography textAlign="center">{setting}</Typography>
                             </MenuItem>
                         ))}
