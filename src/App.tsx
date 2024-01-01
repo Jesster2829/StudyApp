@@ -8,6 +8,7 @@ import { Notes } from './Components/Pages/NotesPage';
 import { FlashcardsSelection } from './Components/Pages/FlashCardsSelectionPage';
 import { Flashcards } from './Components/Pages/FlashCardsPage';
 import { AccountPage } from './Components/Pages/Account';
+import { NoteEditing } from './Components/Pages/NotesEditingPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/homePage" element={<Home />} />
             <Route path="/calendarPage" element={<Calendar />} />
             <Route path="/notesPage" element={<Notes />} />
+            <Route path="/notes" element={<NoteEditing />} />
             <Route path="/flashcardsPage" element={<FlashcardsSelection />} />
             <Route path="/flashcards" element={<Flashcards />} />
             <Route path="/AccountPage" element={<AccountPage />} />
