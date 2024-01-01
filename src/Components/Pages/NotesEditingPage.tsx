@@ -1,37 +1,32 @@
 import { ThemeProvider } from "@emotion/react";
 import React from "react";
 import { darker } from "../../themes";
-import { Paper, TextField, Typography } from "@mui/material";
+import { Button, Paper, TextField, Typography } from "@mui/material";
+import ResponsiveAppBar from "../PageHeaders/homeHeader";
 
 export const NoteEditing = () => {
   return (
     <ThemeProvider theme={darker}>
+      <ResponsiveAppBar />
       <Paper 
         sx={{
           p: 2,
           display: 'flex',
           flexDirection: 'column',
-          height: 240,
+          height: 500,
+          // figure out the width
         }}>
         
         <TextField
           defaultValue="hello" 
           multiline
+          fullWidth
           sx={{
-            whiteSpace: 'pre-wrap',
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                border: 'none', // Remove the border
-              },
-              '&:hover fieldset': {
-                border: 'none', // Remove border on hover
-              },
-              '&.Mui-focused fieldset': {
-                border: 'none', // Remove border when focused
-              },
-            },
+            whiteSpace: 'pre-line',
+            '& fieldset': {border: 'none'},
           }}/>
       </Paper>
+      <Button>Save</Button>
     </ThemeProvider>
   )
 }

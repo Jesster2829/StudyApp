@@ -28,3 +28,8 @@ export interface Class {
     Name: string;
     Description: string;
 }
+
+export interface Note {
+    Name: string;
+    Content: string;
+}
