@@ -1,7 +1,7 @@
 # Studious 
 
 # Where can I access it?
-This is one of our versions, not the most up to date yet though. 
+This link is for our most stable version of the application.
 https://studyapp-14658.web.app/
 
 # What is it?
