@@ -18,7 +18,7 @@ Not yet, it is currently in development. Flashcards is currently implemented on 
 edit and delete flash cards hopefully soon. On the home page you can create a simple to-do list, cannot delete or edit yet though. There is no 
 implementation for the calendar page and notes page, but the team members are currently working on it. 
 
-# What was I responsible for?
+# What was I (Jesster2829) responsible for?
 I was in charge of the Firebasee deployment along with the creation and structure of the Firebase Database. I was also
 responsible for anything to do with the flashcards as well. This is all done, but the formatting of the flashcards is not 
 complete yet, currently looks hideous
