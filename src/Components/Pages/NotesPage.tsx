@@ -4,16 +4,30 @@ import { darker } from "../../themes";
 import ResponsiveAppBar from "../PageHeaders/homeHeader";
 import { useNavigate } from "react-router-dom";
 import { Note } from "../../FireBaseManagement/AppBaseTypes";
+import { getAuth } from "firebase/auth";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../Config/FireBase";
 
 export const Notes = () => {
     const [notes, setNotes] = React.useState<Note[]>([]);
     const [open, setOpen] = React.useState(false);
-    const [newNote, setNewNote] = React.useState<string>("");
+    const [newNoteName, setNewNote] = React.useState<string>("");
 
     const navigate = useNavigate();
+    const auth = getAuth();
+
+    const getNotes = async() => {
+        const ref = doc(db, "users", auth.currentUser?.uid || "");
+        const refSnap = await getDoc(ref);
+        const data = refSnap.data();
+
+        if (data?.Notes) {
+            setNotes(data.Notes);
+        }
+    }
 
     React.useEffect(() => {
-        setNotes([{Name: "Math", Content: "math"}, {Name: "Astronomy", Content: "astronomy"}]);
+        getNotes();
     }, []);
 
     function selectNote(name: string) {
@@ -29,9 +43,14 @@ export const Notes = () => {
         setOpen(false);
     }
     
-    const handleCreate = () => {
+    const handleCreate = async() => {
         console.log("create");
-        setNotes([...notes, {Name: newNote, Content: ""}]);
+        const newNote = {Name: newNoteName, Content: ""};
+
+        const ref = doc(db, 'users', auth.currentUser?.uid || "");
+        await updateDoc(ref, {Notes: arrayUnion(newNote)});
+
+        getNotes();
         setOpen(false);
     }
 
